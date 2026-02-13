@@ -1,30 +1,78 @@
 @import "tailwindcss";
 
-/* Tailwind v4 Theme Configuration 
-  We map the Next.js font variables here so utility classes like 'font-sans' and 'font-rajdhani' work.
-*/
 @theme {
   --font-sans: var(--font-inter);
   --font-rajdhani: var(--font-rajdhani);
+  --font-orbitron: var(--font-orbitron);
+  
+  --color-cyber-red: #FF2E00;
+  --color-cyber-black: #050505;
 }
 
-/* Custom Utilities 
-  In v4, we just write standard CSS. No @layer needed for simple stuff.
-*/
+/* --- ANIMATIONS --- */
 
-/* The sharp angled cut for menu items */
-.clip-path-slant {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+/* Slide Up Entrance */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-enter {
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* The corner triangle decoration */
-.clip-path-triangle {
-  clip-path: polygon(100% 0, 0 0, 100% 100%);
+/* Pulse Glow */
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0px rgba(255, 46, 0, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(255, 46, 0, 0); }
+}
+.animate-pulse-glow {
+  animation: pulse-red 2s infinite;
 }
 
-/* Base Body Style */
-body {
-  background-color: #F2F2F2; /* Light gray cyber background */
-  color: #000000;
-  font-family: var(--font-sans);
+/* Scanning Line for Map */
+@keyframes scanline {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.scan-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-cyber-red);
+  box-shadow: 0 0 10px var(--color-cyber-red);
+  animation: scanline 3s linear infinite;
+  z-index: 20;
+}
+
+/* --- UTILITIES --- */
+
+/* The faint background grid */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 3px;
+}
+
+/* Slanted Clip Paths */
+.clip-slant-right {
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+}
+.clip-button {
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 30%);
 }
