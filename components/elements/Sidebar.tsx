@@ -13,7 +13,7 @@ import { usePathname } from "next/navigation";
 import { useMobileMenu } from "./MobileMenuContext";
 
 const menuItems = [
-  { name: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
   { name: "Global Rank", icon: Trophy, path: "/ranking" },
   { name: "Legal Reports", icon: FileText, path: "/reports" },
   { name: "Sys Config", icon: Settings, path: "/settings" },

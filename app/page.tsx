@@ -1,6 +1,10 @@
-const page = () => {
-  return (
-    <div>page</div>
-  )
+'use client';
+
+import { useRouter } from 'next/navigation';
+
+export default function Page() {
+  const router = useRouter();
+  router.push('/dashboard');
+
+  return null;
 }
-export default page
