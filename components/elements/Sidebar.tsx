@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useMobileMenu } from "./MobileMenuContext";
 
 const menuItems = [
@@ -23,6 +24,23 @@ const menuItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const { isOpen, setIsOpen } = useMobileMenu();
+  const [currentTime, setCurrentTime] = useState("00:00");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(
+        now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
+      );
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const checkActive = (path: string) => {
     if (path === "/") {
@@ -119,13 +137,19 @@ export default function Sidebar() {
         <div className="p-6 border-t-2 border-black bg-gray-50">
           <div className="border border-gray-300 bg-white p-3 shadow-sm hover:border-black transition-colors group">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-[10px] font-rajdhani font-bold text-gray-400 uppercase tracking-widest group-hover:text-[#FF2E00]">
+              <span className="text-[10px] font-rajdhani font-bold text-gray-400 uppercase tracking-widest group-hover:text-cyber-red">
                 System Online
               </span>
               <div className="w-2 h-2 bg-green-500 rounded-full animate-ping" />
             </div>
             <div className="font-orbitron text-lg font-black tracking-tight">
-              09:41 <span className="text-xs text-gray-400 font-bold">AM</span>
+              <span>
+                {new Date().toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+              </span>
             </div>
           </div>
 
