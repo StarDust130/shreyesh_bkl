@@ -1,0 +1,110 @@
+📂 FRONTEND TODO — TENGEN
+🟢 1️⃣ Setup
+
+ ⚙️ Create Next.js app (App Router)
+
+ 🎨 Install Tailwind
+
+ 🌞 Setup clean light theme
+
+ 📁 Create pages folder structure
+
+🟢 2️⃣ Layout (Build First)
+
+ 📌 Create Sidebar component
+
+ 📌 Create Topbar component
+
+ 📌 Create global layout.tsx
+
+ 📌 Add active link highlight
+
+ 📌 Make layout responsive
+
+Goal: App shell ready.
+
+🟢 3️⃣ Dashboard Page /dashboard
+
+ 📦 Create 4 StatCard components
+
+ 🗺 Add map container div
+
+ 📊 Add Top 10 Risk list UI
+
+ 🧾 Add small summary table
+
+ 🎨 Use dummy data
+
+Goal: Looks real even without backend.
+
+🟢 4️⃣ Map Component
+
+ 🗺 Install MapLibre
+
+ 🗺 Render map
+
+ 🎨 Render dummy polygons
+
+ 🖱 Add popup on hover
+
+ 🎯 Color by risk level
+
+Goal: Map feels interactive.
+
+🟢 5️⃣ Plot Detail Page /plot/[id]
+
+ 🔴 Show big risk score
+
+ 📋 Show violation list
+
+ 🗺 Add mini map section
+
+ 📌 Add action buttons
+
+ 📊 Add simple timeline section
+
+Goal: Clean structured layout.
+
+🟢 6️⃣ Ranking Page /ranking
+
+ 📊 Create table component
+
+ 🔢 Sort by risk
+
+ 🔍 Add filter dropdown
+
+ 🔗 Add link to detail page
+
+Goal: Clean professional table.
+
+🟢 7️⃣ Reports Page /reports
+
+ 📄 Create report list UI
+
+ ⬇ Add download button
+
+ 📅 Show date + status
+
+ 🎨 Keep minimal
+
+🟢 8️⃣ Settings Page /settings
+
+ 📤 File upload UI
+
+ ⚖ Risk weight slider UI
+
+ 🏢 Add zone input field
+
+ 💾 Save button UI
+
+🟢 9️⃣ UI Polish
+
+ 📏 Fix spacing (consistent padding)
+
+ 🧱 Add soft borders
+
+ ✨ Add hover effects
+
+ 🔤 Improve typography scale
+
+ 🎯 Align everything properly
