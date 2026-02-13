@@ -7,13 +7,14 @@ import {
   ShieldAlert,
   X,
   Zap,
+  Eclipse,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMobileMenu } from "./MobileMenuContext";
 
 const menuItems = [
-  { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+  { name: "Dashboard", icon: LayoutDashboard, path: "/" },
   { name: "Global Rank", icon: Trophy, path: "/ranking" },
   { name: "Legal Reports", icon: FileText, path: "/reports" },
   { name: "Sys Config", icon: Settings, path: "/settings" },
@@ -23,14 +24,10 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { isOpen, setIsOpen } = useMobileMenu();
 
-  // Helper to determine if a link is active
   const checkActive = (path: string) => {
-    // 1. Special case for Dashboard: matches "/" OR "/dashboard"
     if (path === "/") {
       return pathname === "/" || pathname === "/dashboard";
     }
-    // 2. Other links: Match if the current URL starts with the link path
-    //    (e.g., path "/ranking" matches URL "/ranking/details")
     return pathname.startsWith(path);
   };
 
@@ -53,23 +50,23 @@ export default function Sidebar() {
         ${isOpen ? "translate-x-0 shadow-[100px_0px_0px_rgba(0,0,0,0.1)]" : "-translate-x-full"}
       `}
       >
-        {/* Logo Area */}
-        <div className="h-24 flex items-center justify-between px-6 border-b-2 border-black bg-white relative overflow-hidden">
+        {/* --- FIX IS HERE: Changed h-24 to h-20 to match Topbar --- */}
+        <div className="h-20 flex items-center justify-between px-6 border-b-2 border-black bg-white relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-black"></div>
 
           <div className="flex items-center gap-3 z-10">
             <div className="relative group">
-              <div className="w-10 h-10 bg-black text-white clip-path-slant flex items-center justify-center group-hover:bg-[#FF2E00] transition-colors duration-300">
-                <ShieldAlert className="w-6 h-6" />
+              <div className="w-10 h-10 bg-black text-white clip-path-slant flex items-center justify-center group-hover:bg-cyber-red transition-colors duration-300">
+                <Eclipse className="w-6 h-6" />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-[#FF2E00] clip-path-slant group-hover:bg-black transition-colors"></div>
+              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyber-red clip-path-slant group-hover:bg-black transition-colors"></div>
             </div>
             <div>
               <span className="font-orbitron font-black text-3xl tracking-tighter block leading-none">
                 BKL<span className="text-[#FF2E00]">.</span>
               </span>
-              <span className="font-rajdhani font-bold text-[10px] text-gray-500 uppercase tracking-[0.3em]">
-                System v2.0
+              <span className="font-rajdhani font-bold text-[10px] text-gray-500 uppercase]">
+                Smart Monitoring System
               </span>
             </div>
           </div>
@@ -110,7 +107,6 @@ export default function Sidebar() {
                 />
                 <span className="relative z-10">{item.name}</span>
 
-                {/* Active Indicator Pulse */}
                 {isActive && (
                   <Zap className="w-4 h-4 ml-auto text-white fill-white animate-pulse" />
                 )}
