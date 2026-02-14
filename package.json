@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.95.3",
+
+    "@types/maplibre-gl": "^1.14.0",
+
     "clsx": "^2.1.1",
+    "framer-motion": "^12.34.0",
     "lucide-react": "^0.563.0",
     "maplibre-gl": "^5.18.0",
     "next": "16.1.6",

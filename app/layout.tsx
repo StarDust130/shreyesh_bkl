@@ -12,7 +12,8 @@ const rajdhani = Rajdhani({
 
 export const metadata: Metadata = {
   title: "BKL | Smart Monitoring System",
-  description: "Real-time industrial monitoring dashboard.",
+  description:
+    "A cutting-edge dashboard for real-time monitoring and management of industrial zones.",
 };
 
 export default function RootLayout({
