@@ -1,202 +1,233 @@
-import { ArrowUpRight, AlertTriangle, Layers, Activity } from "lucide-react";
+"use client";
+import { useMemo } from "react";
+import Map, { Source, Layer } from "react-map-gl/maplibre";
+import "maplibre-gl/dist/maplibre-gl.css";
+import Link from "next/link";
+import {
+  AlertTriangle,
+  Layers,
+  Wind,
+  Coins,
+  Maximize2,
+  Satellite,
+  Download,
+  AlertOctagon,
+  ArrowUpRight,
+} from "lucide-react";
+import {
+  DASHBOARD_STATS,
+  MAP_DATA,
+  RISK_LIST,
+  RECENT_VIOLATIONS,
+} from "@/data/mockData";
 
-// --- Components for Internal Use ---
-
-const StatCard = ({
-  title,
-  value,
-  sub,
-  icon: Icon,
-  isCurrency = false,
-}: any) => (
-  <div className="bg-white border-2 border-black p-4 relative shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(255,0,0,1)] transition-all duration-300">
-    <div className="flex justify-between items-start mb-2">
+// --- STAT CARD ---
+const StatCard = ({ title, value, sub, icon: Icon, color = "black" }: any) => (
+  <div className="bg-white border-2 border-black p-5 relative hover:-translate-y-1 hover:shadow-[6px_6px_0px_#000] transition-all duration-300 group">
+    <div className="flex justify-between items-start mb-3">
       <h3 className="font-rajdhani font-bold text-gray-500 uppercase tracking-widest text-xs">
         {title}
       </h3>
-      <Icon className="w-5 h-5 text-black" />
-    </div>
-    <div className="font-rajdhani font-bold text-3xl">{value}</div>
-    {sub && (
-      <div className="text-xs font-bold mt-1 flex items-center text-red-600">
-        {sub}
-        <ArrowUpRight className="w-3 h-3 ml-1" />
-      </div>
-    )}
-    {/* Decorative corner */}
-    <div className="absolute top-0 right-0 w-3 h-3 bg-black clip-path-triangle"></div>
-  </div>
-);
-
-const RiskListItem = ({ id, owner, score }: any) => (
-  <div className="flex items-center justify-between p-3 border-b border-gray-200 hover:bg-red-50 transition-colors cursor-pointer group">
-    <div>
-      <div className="text-xs font-rajdhani text-gray-500">#{id}</div>
-      <div className="font-bold text-sm group-hover:text-red-600 transition-colors">
-        {owner}
+      <div
+        className={`p-2 ${color === "red" ? "bg-red-100 text-[#FF2E00]" : "bg-gray-100 text-black"} clip-path-slant`}
+      >
+        <Icon className="w-5 h-5" />
       </div>
     </div>
-    <div className="flex items-center">
-      <div className="font-rajdhani font-bold text-lg text-red-600">
-        {score}%
-      </div>
-      <ArrowUpRight className="w-4 h-4 ml-2 text-gray-400 group-hover:text-red-600" />
+    <div
+      className={`font-orbitron font-black text-4xl ${color === "red" ? "text-[#FF2E00]" : "text-black"}`}
+    >
+      {value}
+    </div>
+    <div className="text-xs font-bold mt-2 text-gray-500 font-rajdhani">
+      {sub}
     </div>
   </div>
 );
 
 export default function Dashboard() {
+  // 🌍 MAP VIEW: Zoomed out to show Durg to Raipur
+  const initialViewState = {
+    longitude: 81.35, // Central point between Durg and Raipur
+    latitude: 21.22,
+    zoom: 9.5, // Adjusted to show all 10 scattered plots
+  };
+
+  const layerStyle = useMemo(
+    () =>
+      ({
+        id: "plots-fill",
+        type: "fill",
+        paint: {
+          "fill-color": [
+            "case",
+            [">=", ["get", "risk_score"], 80],
+            "#FF2E00",
+            [">=", ["get", "risk_score"], 50],
+            "#FACC15",
+            "#22C55E",
+          ],
+          "fill-opacity": 0.7,
+          "fill-outline-color": "#000000",
+        },
+      }) as const,
+    [],
+  );
+
   return (
-    <div className="space-y-6">
-      {/* 4A: Stat Cards Row */}
+    <div className="space-y-8 pb-10">
+      {/* METRICS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Total Plots" value="342" icon={Layers} />
         <StatCard
-          title="High Risk"
-          value="28"
-          sub="+12% vs last month"
-          icon={AlertTriangle}
+          title="Encroachment"
+          value={DASHBOARD_STATS.encroachment_alerts}
+          sub="Alerts Active"
+          icon={AlertOctagon}
+          color="red"
         />
-        <StatCard title="Medium Risk" value="56" sub="+5%" icon={Activity} />
         <StatCard
-          title="Revenue at Risk"
-          value="₹12.7 Cr"
-          icon={AlertTriangle}
+          title="Hoarding"
+          value={DASHBOARD_STATS.hoarding_cases}
+          sub="Penalty Cases"
+          icon={Layers}
+        />
+        <StatCard
+          title="Avg. AQI"
+          value={DASHBOARD_STATS.avg_aqi}
+          sub="Air Quality"
+          icon={Wind}
+        />
+        <StatCard
+          title="Incentives"
+          value={DASHBOARD_STATS.incentives_distributed}
+          sub="Distributed"
+          icon={Coins}
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[500px]">
-        {/* 4B: Main Map Section */}
-        <div className="lg:col-span-2 bg-white border-2 border-black p-1 relative overflow-hidden group">
-          {/* Map Placeholder UI */}
-          <div className="w-full h-full bg-gray-100 flex items-center justify-center relative">
-            {/* Grid Lines Pattern */}
-            <div
-              className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage:
-                  "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)",
-                backgroundSize: "40px 40px",
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[600px]">
+        {/* MAP */}
+        <div className="lg:col-span-2 bg-black border-4 border-black relative overflow-hidden group shadow-xl">
+          <div className="w-full h-full bg-gray-900 relative">
+            <Map
+              initialViewState={initialViewState}
+              mapStyle={{
+                version: 8,
+                sources: {
+                  "satellite-tiles": {
+                    type: "raster",
+                    tiles: [
+                      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                    ],
+                    tileSize: 256,
+                  },
+                },
+                layers: [
+                  {
+                    id: "satellite-layer",
+                    type: "raster",
+                    source: "satellite-tiles",
+                  },
+                ],
               }}
-            ></div>
-
-            {/* Mock Map Element */}
-            <div className="text-center z-10">
-              <div className="font-rajdhani font-bold text-2xl mb-2">
-                MAP VIEW ACTIVE
-              </div>
-              <div className="text-xs text-gray-500 uppercase tracking-widest">
-                Waiting for MapLibre Integration
-              </div>
-              <button className="mt-4 px-6 py-2 bg-white border-2 border-black font-bold font-rajdhani hover:bg-black hover:text-white transition-colors">
-                LOAD SATELLITE DATA
+              interactive={false}
+              attributionControl={false}
+            >
+              <Source id="plots-data" type="geojson" data={MAP_DATA as any}>
+                <Layer {...layerStyle} />
+              </Source>
+            </Map>
+            <Link href="/map" className="absolute top-4 right-4 z-10">
+              <button className="bg-white/90 backdrop-blur text-black p-3 border-2 border-black hover:bg-[#FF2E00] hover:text-white transition-colors shadow-lg">
+                <Maximize2 className="w-5 h-5" />
               </button>
-            </div>
-
-            {/* Cyber overlay elements */}
-            <div className="absolute top-4 left-4 bg-white border border-black px-2 py-1 text-xs font-bold">
-              LIVE FEED
-            </div>
-            <div className="absolute bottom-4 right-4 bg-black text-white px-2 py-1 text-xs font-bold font-rajdhani">
-              LAT: 21.25 | LONG: 81.62
+            </Link>
+            <div className="absolute bottom-6 left-6 bg-black text-white px-4 py-2 border-l-4 border-[#FF2E00] z-10">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                Live Satellite Feed
+              </div>
+              <div className="text-sm font-bold font-orbitron">
+                CHHATTISGARH BELT
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 4C: Right Panel (Risk List) */}
-        <div className="bg-white border-2 border-black flex flex-col">
-          <div className="p-4 border-b-2 border-black flex justify-between items-center bg-gray-50">
-            <h2 className="font-rajdhani font-bold text-lg uppercase">
-              Top High Risk Plots
-            </h2>
-            <span className="text-xs font-bold text-red-600 animate-pulse">
+        {/* ALERTS */}
+        <div className="bg-white border-2 border-black flex flex-col shadow-lg">
+          <div className="p-5 border-b-2 border-black bg-gray-50 flex justify-between items-center">
+            <div>
+              <h2 className="font-orbitron font-bold text-lg uppercase">
+                Priority Alerts
+              </h2>
+            </div>
+            <span className="text-[10px] font-bold bg-[#FF2E00] text-white px-2 py-0.5 rounded">
               LIVE
             </span>
           </div>
-          <div className="flex-1 overflow-auto">
-            <RiskListItem id="135" owner="Sharma Industries" score="82" />
-            <RiskListItem id="207" owner="Mehta Corp" score="78" />
-            <RiskListItem id="154" owner="Verma Exports" score="75" />
-            <RiskListItem id="198" owner="R.K. Enterprises" score="73" />
-            <RiskListItem id="220" owner="Patel Construction" score="71" />
-            <RiskListItem id="089" owner="Singh Fabrics" score="68" />
-            <RiskListItem id="301" owner="Nanda Metals" score="67" />
-          </div>
-          <div className="p-3 border-t border-black text-center">
-            <button className="text-xs font-bold font-rajdhani uppercase hover:text-red-600 tracking-wider">
-              View All Risks
-            </button>
+          <div className="flex-1 overflow-y-auto custom-scrollbar">
+            {RISK_LIST.map((item, i) => (
+              <div
+                key={i}
+                className="flex justify-between items-center p-4 border-b border-gray-100 hover:bg-red-50 cursor-pointer group transition-colors"
+              >
+                <div>
+                  <div className="font-bold text-sm group-hover:text-[#FF2E00] transition-colors">
+                    {item.owner}
+                  </div>
+                  <div className="text-[10px] text-gray-500 uppercase font-bold">
+                    {item.reason}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div
+                    className={`font-black font-orbitron text-xl ${item.risk === "Critical" ? "text-[#FF2E00]" : "text-orange-500"}`}
+                  >
+                    92
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* 4D: Bottom Table */}
-      <div className="bg-white border-2 border-black">
-        <div className="p-4 border-b-2 border-black bg-gray-50">
-          <h2 className="font-rajdhani font-bold text-lg uppercase">
-            Recent Violations
+      {/* TABLE */}
+      <div className="bg-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,0.1)]">
+        <div className="p-5 border-b-2 border-black bg-gray-50 flex justify-between items-center">
+          <h2 className="font-orbitron font-bold text-lg uppercase">
+            Compliance Log
           </h2>
+          <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 hover:border-black text-xs font-bold uppercase transition-colors">
+            <Download className="w-4 h-4" /> Export
+          </button>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm font-inter">
-            <thead className="bg-black text-white font-rajdhani uppercase tracking-wider text-xs">
+          <table className="w-full text-left text-sm font-rajdhani font-medium">
+            <thead className="bg-black text-white uppercase tracking-wider text-xs font-orbitron">
               <tr>
-                <th className="p-4">Rank</th>
-                <th className="p-4">Plot ID</th>
-                <th className="p-4">Owner</th>
-                <th className="p-4">Risk Score</th>
-                <th className="p-4">Area Deviation</th>
-                <th className="p-4">Status</th>
+                <th className="p-4">Entity</th>
+                <th className="p-4">Issue</th>
+                <th className="p-4">Severity</th>
                 <th className="p-4">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
-              {[
-                {
-                  rank: 1,
-                  id: "135",
-                  owner: "Sharma Industries",
-                  score: 82,
-                  dev: "25%",
-                  status: "Boundary Breach",
-                },
-                {
-                  rank: 2,
-                  id: "207",
-                  owner: "Mehta Corp",
-                  score: 78,
-                  dev: "20%",
-                  status: "Payment Overdue",
-                },
-                {
-                  rank: 3,
-                  id: "154",
-                  owner: "Verma Exports",
-                  score: 75,
-                  dev: "18%",
-                  status: "Vacant Land",
-                },
-              ].map((row, i) => (
-                <tr key={i} className="hover:bg-gray-50 font-medium">
-                  <td className="p-4 text-gray-500">#{row.rank}</td>
-                  <td className="p-4 font-bold">{row.id}</td>
-                  <td className="p-4">{row.owner}</td>
-                  <td className="p-4 text-red-600 font-bold">{row.score}%</td>
+            <tbody className="divide-y divide-gray-100">
+              {RECENT_VIOLATIONS.map((row, i) => (
+                <tr key={i} className="hover:bg-red-50/30 transition-colors">
+                  <td className="p-4 font-bold">{row.owner}</td>
                   <td className="p-4">
-                    <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden max-w-[100px]">
-                      <div
-                        className="bg-yellow-500 h-full"
-                        style={{ width: row.dev }}
-                      ></div>
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <span className="border border-red-200 bg-red-50 text-red-700 px-2 py-1 text-xs font-bold uppercase rounded-sm">
-                      {row.status}
+                    <span className="bg-gray-100 px-2 py-1 text-xs font-bold uppercase">
+                      {row.type}
                     </span>
                   </td>
                   <td className="p-4">
-                    <button className="text-xs font-bold underline hover:text-red-600">
+                    <div
+                      className={`h-2 w-16 rounded-full ${row.severity === "High" ? "bg-[#FF2E00]" : "bg-yellow-500"}`}
+                    ></div>
+                  </td>
+                  <td className="p-4">
+                    <button className="text-[10px] font-bold border border-black px-3 py-1 hover:bg-black hover:text-white transition-colors">
                       INSPECT
                     </button>
                   </td>

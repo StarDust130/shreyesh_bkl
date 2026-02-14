@@ -80,8 +80,13 @@ export default function Sidebar() {
               <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyber-red clip-path-slant group-hover:bg-black transition-colors"></div>
             </div>
             <div>
-              <span className="font-orbitron font-black text-3xl tracking-tighter block leading-none">
-                BKL<span className="text-[#FF2E00]">.</span>
+              <span className="font-orbitron font-black text-3xl tracking-tighter block leading-none animate-pulse group-hover:opacity-0 transition-opacity duration-300">
+                <span className="inline-block">BKL</span>
+                <span className="text-cyber-red">.</span>
+              </span>
+              <span className="font-orbitron font-black text-3xl tracking-tighter block leading-none absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="inline-block">BKL</span>
+                <span className="text-cyber-red">.</span>
               </span>
               <span className="font-rajdhani font-bold text-[10px] text-gray-500 uppercase]">
                 Smart Monitoring System
