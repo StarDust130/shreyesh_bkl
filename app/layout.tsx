@@ -1,46 +1,46 @@
-import type { Metadata } from "next";
-import { Inter, Rajdhani } from "next/font/google";
-import "./globals.css";
-import Sidebar from "@/components/elements/Sidebar";
-import Topbar from "@/components/elements/Topbar";
+import './styles/globals.css'
+import { Orbitron, Space_Grotesk } from 'next/font/google'
+import Navbar from './components/Navbar.tsx'
+import Footer from './components/Footer.tsx'
+import type { Metadata } from 'next'
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const rajdhani = Rajdhani({
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-rajdhani",
-});
+const orbitron = Orbitron({ 
+  subsets: ['latin'], 
+  variable: '--font-orbitron',
+  display: 'swap',
+})
+
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ['latin'], 
+  variable: '--font-space',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: "TENGEN | Risk Intelligence",
-  description: "Industrial Land Governance",
-};
+  title: 'BKL | Cyberpunk UI',
+  description: 'Future BKL Interface',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${inter.variable} ${rajdhani.variable} bg-[#F2F2F2] text-black font-sans antialiased`}
-      >
-        {/* Layout Shell */}
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1 ml-0 md:ml-[220px] flex flex-col">
-            <Topbar />
-            <div className="p-6 overflow-auto h-[calc(100vh-64px)]">
-              {children}
-            </div>
-          </main>
+    <html lang="en" className={`${orbitron.variable} ${spaceGrotesk.variable}`}>
+      <body className="antialiased min-h-screen relative overflow-x-hidden selection:bg-red-500 selection:text-white">
+        {/* Background Decor */}
+        <div className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
+           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 rounded-full blur-[100px]" />
+           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px]" />
         </div>
+
+        <Navbar />
+        <main className="pt-24 pb-10">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
-  );
+  )
 }
-
-// // Placeholder imports to prevent errors before components are created
-// import Sidebar from "@/components/Sidebar";
-// import Topbar from "@/components/Topbar";

@@ -1,0 +1,51 @@
+/* Glassmorphism Core Card */
+.glass-card {
+  /* Semi-transparent background */
+  /* background: rgba(255, 255, 255, 0.25); */
+  
+  /* The "Frosted" look */
+  /* backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); */
+  
+  /* Defining the edges with a thin border */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
+  /* Outer glow/shadow for depth */
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
+  
+  /* Ensuring content stays inside the rounded corners */
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Optional: Slight lift effect on hover */
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.074);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Custom Red Accent for the Hero Section */
+.hero-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 100%;
+  background-color: #00000000;
+}
+
+/* Glass Badges for Top Overlay */
+.glass-badge-light {
+  background: rgba(255, 255, 255, 0.5);
+  /* backdrop-filter: blur(8px); */
+  /* -webkit-backdrop-filter: blur(8px); */
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-badge-dark {
+  background: rgba(0, 0, 0, 0.4);
+  /* backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
