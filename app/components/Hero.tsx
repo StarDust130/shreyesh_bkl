@@ -10,7 +10,7 @@ export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
       gsap.from(".hero-text", {
         y: 100,
         opacity: 0,
@@ -37,7 +37,7 @@ export default function Hero() {
         {/* Headline */}
         <div className="mb-12 max-w-6xl">
           <h1 className="hero-text text-[clamp(2.5rem,5vw,5rem)] leading-[0.9] font-black uppercase tracking-tighter text-gray-900">
-            THE COMMAND CENTER FOR <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500">INDUSTRIAL LAND</span> GOVERNANCE <span className="text-[#FF0033]">B.K.L</span> with us
+           Technology that <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-500"> Safeguards</span> public assets
           </h1>
         </div>
 
